@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_beranda"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize">
+
+        <TextView
+            android:id="@+id/appName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="26sp"
+            android:textColor="@color/colorAccent"
+            android:fontFamily="@font/sf_pro_display_bold" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civ_profile_image"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_dummy_profile"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="16dp" />
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:id="@+id/layout_beranda_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="16dp"
+        android:layout_below="@+id/toolbar_beranda">
+
+        <RelativeLayout
+            android:id="@+id/device_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/device"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Daftar Device"
+                android:textSize="20sp"
+                android:textColor="@color/colorAccent"
+                android:fontFamily="@font/sf_pro_display_bold" />
+
+            <TextView
+                android:id="@+id/expand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tambah Device"
+                android:textSize="14sp"
+                android:textColor="@color/colorAccent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:clickable="true" />
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="24dp"
+            android:id="@+id/rvListDevice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/list_device"
+            android:layout_below="@+id/device_layout"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/device_kosong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kamu belum menambahkan device"
+            android:layout_below="@+id/device_layout"
+            android:layout_marginTop="64dp"
+            android:layout_marginBottom="20dp"
+            android:layout_centerInParent="true"
+            android:textColor="@color/colorMenuDefault"
+            android:textSize="16dp"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+</RelativeLayout>

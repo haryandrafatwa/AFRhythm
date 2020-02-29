@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/White">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_register"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:theme="@style/ToolbarTheme">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Daftar"
+            android:textSize="22sp"
+            android:textColor="@color/colorAccent"
+            android:layout_gravity="center" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_register"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <EditText
+            android:id="@+id/et_nama_daftar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:hint="Nama"
+            android:inputType="text"
+            android:textColor="@color/colorInputText"
+            android:textSize="14sp"
+            android:drawablePadding="30dp"
+            android:drawableStart="@drawable/ic_user"
+            android:background="@drawable/bg_edittext" />
+
+        <EditText
+            android:id="@+id/et_email_daftar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/colorInputText"
+            android:textSize="14sp"
+            android:drawablePadding="30dp"
+            android:drawableStart="@drawable/ic_mail_black_24dp"
+            android:background="@drawable/bg_edittext"
+            android:layout_below="@id/et_nama_daftar"
+            android:layout_marginTop="20dp" />
+
+        <LinearLayout
+            android:id="@+id/et_tipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_edittext"
+            android:layout_below="@id/et_email_daftar"
+            android:layout_marginTop="20dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/ic_tipe_acount"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_marginLeft="10dp" />
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tipeAccount"
+                android:layout_marginLeft="18dp" />
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                android:id="@+id/et_tipe_account" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_pass_daftar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColor="@color/colorInputText"
+            android:textSize="14sp"
+            android:drawablePadding="30dp"
+            android:drawableStart="@drawable/ic_password"
+            android:drawableEnd="@drawable/ic_visibility"
+            android:background="@drawable/bg_edittext"
+            android:layout_below="@id/et_tipe"
+            android:layout_marginTop="20dp" />
+
+        <EditText
+            android:id="@+id/et_repass_daftar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:hint="Re-Type Password"
+            android:inputType="textPassword"
+            android:textColor="@color/colorInputText"
+            android:textSize="14sp"
+            android:drawablePadding="30dp"
+            android:drawableStart="@drawable/ic_password"
+            android:drawableEnd="@drawable/ic_visibility"
+            android:background="@drawable/bg_edittext"
+            android:layout_below="@id/et_pass_daftar"
+            android:layout_marginTop="20dp" />
+
+        <Button
+            android:id="@+id/btn_daftar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_repass_daftar"
+            android:text="Daftar"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bg_btn_pink"
+            android:layout_marginTop="40dp"
+            android:padding="10dp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/btn_daftar">
+
+            <TextView
+                android:id="@+id/tv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sudah punya akun?"
+                android:layout_alignParentBottom="true" />
+
+            <TextView
+                android:id="@+id/tv_masuk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MASUK"
+                android:textColor="@color/colorAccent"
+                android:textStyle="bold"
+                android:layout_toRightOf="@id/tv2"
+                android:layout_marginStart="4dp"
+                android:layout_alignParentBottom="true" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>
