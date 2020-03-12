@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/et_rumahsakit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="Nama Rumah Sakit"
+        android:inputType="text"
+        android:textColor="@color/colorInputText"
+        android:textSize="14sp"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/ic_rumahsakit"
+        android:background="@drawable/bg_edittext"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginTop="16dp"/>
+
+    <EditText
+        android:id="@+id/et_device_id_dokter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_below="@+id/et_rumahsakit"
+        android:hint="ID Perangkat"
+        android:inputType="text"
+        android:textColor="@color/colorInputText"
+        android:textSize="14sp"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/ic_watch"
+        android:background="@drawable/bg_edittext"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginTop="8dp"/>
+
+    <EditText
+        android:id="@+id/et_nama_pasien"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_below="@+id/et_device_id_dokter"
+        android:hint="Nama Pasien"
+        android:inputType="text"
+        android:textColor="@color/colorInputText"
+        android:textSize="14sp"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/ic_user"
+        android:background="@drawable/bg_edittext"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_marginTop="8dp"/>
+
+</RelativeLayout>

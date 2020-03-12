@@ -1,13 +1,383 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_logout"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:text="LOGOUT"
-        android:layout_centerInParent="true"
-        />
+    <RelativeLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
 
-</RelativeLayout>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_profile"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize">
+
+            <TextView
+                android:id="@+id/tv_profile_selesai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Selesai"
+                android:textSize="20sp"
+                android:textColor="@color/colorAccent"
+                android:layout_gravity="end"
+                android:layout_marginRight="16dp"
+                android:fontFamily="@font/sf_pro_display_semibold" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/civ_profile_pp"
+            android:layout_height="120dp"
+            android:layout_width="120dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/toolbar_profile"
+            android:background="@drawable/ic_dummy_profile"
+            android:layout_marginTop="16dp"
+            android:visibility="invisible"/>
+
+
+        <ProgressBar
+            android:id="@+id/progressbar_pp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/toolbar_profile"
+            android:layout_marginTop="50dp"/>
+        
+        <TextView
+            android:id="@+id/tv_profile_nama"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="22sp"
+            android:textColor="@color/colorAccent"
+            android:layout_below="@id/civ_profile_pp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/sf_pro_display_bold" />
+
+        <RelativeLayout
+            android:id="@+id/layout_menu1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_profile_nama"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:id="@+id/sub_title1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_info"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rincian Medis"
+                    android:fontFamily="@font/sf_pro_display_semibold"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sub_title1"
+                android:background="@drawable/bg_white"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp">
+
+                <RelativeLayout
+                    android:id="@+id/menu11"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <Button
+                        android:id="@+id/btn_profil_kesehatan"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="?android:attr/selectableItemBackground"/>
+
+                    <TextView
+                        android:id="@+id/tv_menu1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="Profil Kesehatan"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/separator_11"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/separator"
+                    android:layout_below="@id/menu11"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"/>
+
+                <RelativeLayout
+                    android:id="@+id/menu12"
+                    android:layout_below="@id/separator_11"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <Button
+                        android:id="@+id/btn_id_medis"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="?android:attr/selectableItemBackground"/>
+
+                    <TextView
+                        android:id="@+id/tv_menu12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="ID Medis"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/separator_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/separator"
+                    android:layout_below="@id/menu12"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"/>/>
+
+                <RelativeLayout
+                    android:id="@+id/menu13"
+                    android:layout_below="@id/separator_12"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <Button
+                        android:id="@+id/btn_ip_server"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="?android:attr/selectableItemBackground"/>
+
+                    <TextView
+                        android:id="@+id/tv_menu13"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="IP Server"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layout_menu2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_menu1"
+            android:layout_marginTop="16dp">
+
+            <LinearLayout
+                android:id="@+id/sub_title2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_settings"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pengaturan"
+                    android:fontFamily="@font/sf_pro_display_semibold"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="18sp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sub_title2"
+                android:background="@drawable/bg_white"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp">
+
+                <RelativeLayout
+                    android:id="@+id/menu21"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <Button
+                        android:id="@+id/btn_ganti_bahasa"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="?android:attr/selectableItemBackground"/>
+
+                    <TextView
+                        android:id="@+id/tv_menu21"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="Ganti Bahasa"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/separator_21"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/separator"
+                    android:layout_below="@id/menu21"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"/>/>
+
+                <RelativeLayout
+                    android:id="@+id/menu22"
+                    android:layout_below="@id/separator_21"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <Button
+                        android:id="@+id/btn_bantuan"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="?android:attr/selectableItemBackground"/>
+
+                    <TextView
+                        android:id="@+id/tv_menu22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="Bantuan"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/separator_22"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/separator"
+                    android:layout_below="@id/menu22"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"/>/>
+
+                <RelativeLayout
+                    android:id="@+id/menu23"
+                    android:layout_below="@id/separator_22"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <Button
+                        android:id="@+id/btn_kebijakan_privasi"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="?android:attr/selectableItemBackground"/>
+
+                    <TextView
+                        android:id="@+id/tv_menu23"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="Kebijakan Privasi"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/separator_23"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@drawable/separator"
+                    android:layout_below="@id/menu23"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"/>/>
+
+                <RelativeLayout
+                    android:id="@+id/menu24"
+                    android:layout_below="@id/separator_23"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <Button
+                        android:id="@+id/btn_ketentuan_layanan"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="?android:attr/selectableItemBackground"/>
+
+                    <TextView
+                        android:id="@+id/tv_menu24"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="Ketentuan Layanan"
+                        android:fontFamily="@font/sf_pro_display_regular"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="18sp"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_btn_pink"
+            android:layout_below="@id/layout_menu2"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="Keluar"
+            android:textColor="@color/White"/>
+
+
+    </RelativeLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -7,7 +7,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 
+import com.example.atrialfibrilationdetection.Feature.Dokter.DokterActivity;
 import com.example.atrialfibrilationdetection.Feature.Pasien.PasienActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -15,11 +18,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class MainActivity extends AppCompatActivity {
 
     private DatabaseReference userRefs;
     private FirebaseAuth mAuth;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +38,10 @@ public class MainActivity extends AppCompatActivity {
         String currentUserID = mAuth.getCurrentUser().getUid();
         userRefs = FirebaseDatabase.getInstance().getReference().child("User").child(currentUserID);
 
+        progressBar = findViewById(R.id.progressbar);
+
         final PasienActivity pasienActivity = new PasienActivity();
+        final DokterActivity dokterActivity = new DokterActivity();
 
         userRefs.addValueEventListener(new ValueEventListener() {
             @Override
@@ -42,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 if (tipe.equals("Pasien")) {
                     setFragment(pasienActivity);
                 } else {
+                    setFragment(dokterActivity);
                 }
             }
 
@@ -62,7 +71,8 @@ public class MainActivity extends AppCompatActivity {
     public void setFragment(Fragment fragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frameFragment,fragment);
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
+        progressBar.setVisibility(View.GONE);
     }
 }
 

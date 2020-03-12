@@ -37,13 +37,14 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:19.1.1' // add the Firebase Storage SDK
     implementation 'com.google.firebase:firebase-database:19.2.1' // add the Firebase Database SDK
     implementation 'com.nex3z:notification-badge:0.1.0' //Notification Badge
-    implementation 'de.hdodenhof:circleimageview:3.1.0' //Circle Image View
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.squareup.picasso:picasso:2.71828' //Circle Image View
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0' //LineChart
 
-    implementation('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') { // MQTT Module
-        exclude module: 'support-v4'
-    }
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.2'
+    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 
-    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.thoughtbot:expandablerecyclerview:1.3'
     implementation 'com.android.support:cardview-v7:28.0.0'
 }

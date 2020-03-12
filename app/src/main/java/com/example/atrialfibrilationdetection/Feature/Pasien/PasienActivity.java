@@ -5,23 +5,21 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.atrialfibrilationdetection.Feature.ProfileActivity;
 import com.example.atrialfibrilationdetection.R;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
@@ -39,6 +37,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -52,6 +52,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,15 +63,17 @@ public class PasienActivity extends Fragment {
     private LineChart mChart;
     private Thread thread;
     private boolean plotData = true;
+    private ProgressBar progressBar;
 
     private AlertDialog.Builder dialog;
     private LayoutInflater inflater;
     private View  dialogView;
-    private EditText et_device_id;
-    private String device_id;
+    private EditText et_device_id,et_server;
+    private String device_id,ip_server;
 
     private Calendar calendar;
     private String date;
+    private long millis;
     private SimpleDateFormat dateFormat;
 
     private FirebaseAuth mAuth;
@@ -113,22 +116,32 @@ public class PasienActivity extends Fragment {
         mChart = getActivity().findViewById(R.id.lineChart);
         mRecyclerView = getActivity().findViewById(R.id.rvListDevice);
         circleImageView = (CircleImageView) getActivity().findViewById(R.id.civ_profile_image);
+        progressBar = getActivity().findViewById(R.id.progressbar_menu);
 
         mAuth = FirebaseAuth.getInstance();
         String currentUID = mAuth.getCurrentUser().getUid();
         userRefs = FirebaseDatabase.getInstance().getReference().child("User").child(currentUID);
         riwayatRefs = FirebaseDatabase.getInstance().getReference().child("User").child(currentUID).child("riwayat");
 
-        calendar = Calendar.getInstance();
-        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        date = dateFormat.format(calendar.getTime());
+        try {
+            calendar = Calendar.getInstance();
+            dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            date = dateFormat.format(calendar.getTime());
+            Date tgl = dateFormat.parse(date);
+            millis = tgl.getTime();
 
-        checkDate(date);
+            checkDate(millis,date);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
 
         userRefs.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull final DataSnapshot dataSnapshot) {
                 String following = dataSnapshot.child("subscription").getValue().toString();
+                String ip = dataSnapshot.child("ip").getValue().toString();
                 if (following.equals("-")) {
                     tv_addordelete_device.setText("Tambah Device");
                     tv_device_id.setVisibility(View.INVISIBLE);
@@ -139,7 +152,7 @@ public class PasienActivity extends Fragment {
                     tv_addordelete_device.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            initializeDialog();
+                            initializeDialogDevice();
                         }
                     });
                 } else {
@@ -158,7 +171,26 @@ public class PasienActivity extends Fragment {
                         }
                     });
                 }
-                initializeChart(following);
+
+
+
+                if(dataSnapshot.hasChild("displaypicture")){
+                    Picasso.get().load(dataSnapshot.child("displaypicture").getValue().toString()).into(circleImageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            circleImageView.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
+                }else{
+                    Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/af-detection.appspot.com/o/DisplayPictures%2Fdummy%2Fic_profile.png?alt=media&token=00d9cd5d-c2ed-4bfd-93a7-87765f3cb607").into(circleImageView);
+                }
+                initializeChart(following,ip);
                 initRecyclerView();
             }
 
@@ -176,11 +208,12 @@ public class PasienActivity extends Fragment {
                     tv_riwayat_kosong.setVisibility(View.GONE);
                     mLists.clear();
                     for (DataSnapshot dsp:dataSnapshot.getChildren()){
-                        for (DataSnapshot dats: dsp.getChildren()){
-                            mLists.add(new RiwayatModel(dats.child("device_id").getValue().toString(),dsp.getKey()));
-                            mAdapter.notifyDataSetChanged();
+                        for (DataSnapshot dats:dsp.getChildren()){
+                                mLists.add(new RiwayatModel(dats.child("device_id").getValue().toString(),dats.child("date").getValue().toString()));
+                                mAdapter.notifyDataSetChanged();
                         }
                     }
+
                 }else{
                     mRecyclerView.setVisibility(View.GONE);
                     tv_riwayat_kosong.setVisibility(View.VISIBLE);
@@ -202,17 +235,18 @@ public class PasienActivity extends Fragment {
 
     }
 
-    private void checkDate(final String date){
+    private void checkDate(final long millis, final String date){
 
         userRefs.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 final String following = dataSnapshot.child("subscription").getValue().toString();
+                String ip = dataSnapshot.child("ip").getValue().toString();
                 riwayatRefs.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(!dataSnapshot.getKey().equals(date)){
-                            riwayatRefs.child(date).addValueEventListener(new ValueEventListener() {
+                        if(!dataSnapshot.getKey().equals(millis)){
+                            riwayatRefs.child(String.valueOf(millis)).addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if(!dataSnapshot.getKey().equals(following) && !following.equals("-")){
@@ -221,7 +255,8 @@ public class PasienActivity extends Fragment {
                                         userMap.put(following+"/normal",0);
                                         userMap.put(following+"/average_af",0);
                                         userMap.put(following+"/device_id",following);
-                                        riwayatRefs.child(date).updateChildren(userMap);
+                                        userMap.put(following+"/date",date);
+                                        riwayatRefs.child(String.valueOf(millis)).updateChildren(userMap);
                                     }
                                 }
 
@@ -238,6 +273,10 @@ public class PasienActivity extends Fragment {
 
                     }
                 });
+
+                if(ip.equalsIgnoreCase("-")){
+                    initializeDialogIP();
+                }
             }
 
             @Override
@@ -264,12 +303,10 @@ public class PasienActivity extends Fragment {
                         if (task.isSuccessful()) {
                             Toast.makeText(getActivity(), "Hapus Berhasil", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
-                            getActivity().finish();
 
                         } else {
                             Toast.makeText(getActivity(), "Error : " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
-                            getActivity().finish();
                         }
                     }
                 });
@@ -292,17 +329,17 @@ public class PasienActivity extends Fragment {
         mAdapter = new RiwayatAdapter(mLists,getActivity().getApplicationContext(),getActivity());
         mLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,true);
         ((LinearLayoutManager) mLayoutManager).setStackFromEnd(true);
+        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private void initializeDialog(){
+    private void initializeDialogDevice(){
         dialog = new AlertDialog.Builder(getActivity());
         inflater = getLayoutInflater();
         dialogView = inflater.inflate(R.layout.add_device,null);
         dialog.setView(dialogView);
         dialog.setCancelable(false);
-        dialog.setIcon(R.drawable.ic_wristwatch);
         dialog.setTitle(Html.fromHtml("<font color='#416188'>Tambah Device</font>"));
 
 
@@ -315,16 +352,72 @@ public class PasienActivity extends Fragment {
                 if(device_id.isEmpty()){
                     Toast.makeText(getActivity(), "Silahkan isi Device ID terlebih dahulu", Toast.LENGTH_SHORT).show();
                 }else{
-                    calendar = Calendar.getInstance();
-                    dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                    date = dateFormat.format(calendar.getTime());
+                    try {
+                        calendar = Calendar.getInstance();
+                        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                        date = dateFormat.format(calendar.getTime());
+                        Date tgl = dateFormat.parse(date);
+                        millis = tgl.getTime();
 
+                        HashMap userMap = new HashMap();
+                        userMap.put("subscription", device_id);
+                        userMap.put("riwayat/"+millis+"/"+device_id+"/af",0);
+                        userMap.put("riwayat/"+millis+"/"+device_id+"/normal",0);
+                        userMap.put("riwayat/"+millis+"/"+device_id+"/average_af",0);
+                        userMap.put("riwayat/"+millis+"/"+device_id+"/device_id",device_id);
+                        userMap.put("riwayat/"+millis+"/"+device_id+"/date",date);
+                        userRefs.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
+                            @Override
+                            public void onComplete(Task task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getActivity(), "Tambahkan Berhasil", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+
+                                } else {
+                                    Toast.makeText(getActivity(), "Error : " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        dialog.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void initializeDialogIP(){
+        dialog = new AlertDialog.Builder(getActivity());
+        inflater = getLayoutInflater();
+        dialogView = inflater.inflate(R.layout.add_server,null);
+        dialog.setView(dialogView);
+        dialog.setCancelable(false);
+        dialog.setTitle(Html.fromHtml("<font color='#416188'>Tambah Server</font>"));
+
+
+        et_server = dialogView.findViewById(R.id.et_server);
+
+        dialog.setPositiveButton("Tambah", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(final DialogInterface dialog, int which) {
+                ip_server = et_server.getText().toString();
+                if(ip_server.isEmpty()){
+                    Toast.makeText(getActivity(), "Silahkan isi IP Server terlebih dahulu", Toast.LENGTH_SHORT).show();
+                    initializeDialogIP();
+                }else{
                     HashMap userMap = new HashMap();
-                    userMap.put("subscription", device_id);
-                    userMap.put("riwayat/"+date+"/"+device_id+"/af",0);
-                    userMap.put("riwayat/"+date+"/"+device_id+"/normal",0);
-                    userMap.put("riwayat/"+date+"/"+device_id+"/average_af",0);
-                    userMap.put("riwayat/"+date+"/"+device_id+"/device_id",device_id);
+                    userMap.put("ip", ip_server);
                     userRefs.updateChildren(userMap).addOnCompleteListener(new OnCompleteListener() {
                         @Override
                         public void onComplete(Task task) {
@@ -342,9 +435,20 @@ public class PasienActivity extends Fragment {
             }
         });
 
-        dialog.setNegativeButton("Batal", new DialogInterface.OnClickListener() {
+        dialog.show();
+    }
+
+    public void initializeDialogIPHandler(){
+        dialog = new AlertDialog.Builder(getActivity());
+        inflater = getLayoutInflater();
+        dialogView = inflater.inflate(R.layout.dialog_ip,null);
+        dialog.setView(dialogView);
+        dialog.setCancelable(false);
+        dialog.setTitle(Html.fromHtml("<font color='#416188'>Tidak Terhubung!</font>"));
+
+        dialog.setPositiveButton("Oke", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(final DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
@@ -352,7 +456,7 @@ public class PasienActivity extends Fragment {
         dialog.show();
     }
 
-    private void initializeChart(final String topics){
+    private void initializeChart(final String topics, final String ip){
 
         // disable description text
         mChart.getDescription().setEnabled(false);
@@ -408,19 +512,19 @@ public class PasienActivity extends Fragment {
 
         feedMultiple();
 
+        String server = "tcp://"+ip;
+
         String clientId = MqttClient.generateClientId();
         final MqttAndroidClient client =
-                new MqttAndroidClient(getActivity(), "tcp://192.168.1.6:1883",
+                new MqttAndroidClient(getActivity(), server,
                         clientId);
-
+//tcp://192.168.1.61:1883
         try {
             IMqttToken token = client.connect();
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // We are connected
-
-                    Log.d("1234567890",topics);
                     Toast.makeText(getActivity().getApplicationContext(), "Connected!", Toast.LENGTH_SHORT).show();
 
                     String topic = topics;
@@ -431,7 +535,7 @@ public class PasienActivity extends Fragment {
                             @Override
                             public void onSuccess(IMqttToken asyncActionToken) {
                                 // The message was published
-                                Toast.makeText(getActivity(), "Subscribe Success!", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getActivity(), "Subscribe Success!", Toast.LENGTH_SHORT).show();
                                 client.setCallback(new MqttCallback() {
                                     @Override
                                     public void connectionLost(Throwable cause) {
@@ -455,7 +559,7 @@ public class PasienActivity extends Fragment {
                                                   Throwable exception) {
                                 // The subscription could not be performed, maybe the user was not
                                 // authorized to subscribe on the specified topic e.g. using wildcards
-                                Toast.makeText(getActivity(), "Subscribe Failure!", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getActivity(), "Subscribe Failure!", Toast.LENGTH_SHORT).show();
 
                             }
                         });
@@ -467,12 +571,18 @@ public class PasienActivity extends Fragment {
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     // Something went wrong e.g. connection timeout or firewall problems
-                    Toast.makeText(getActivity(), "Not Conncected!", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(getActivity().getApplicationContext(), "Not Connected!", Toast.LENGTH_SHORT).show();
+                    client.unregisterResources();
+                    client.close();
+                    initializeDialogIPHandler();
                 }
+
+
             });
         } catch (MqttException e) {
             e.printStackTrace();
+            client.unregisterResources();
+            client.close();
         }
     }
 
@@ -551,5 +661,6 @@ public class PasienActivity extends Fragment {
         startActivity(mainIntent);
         getActivity().overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
     }
+
 }
 

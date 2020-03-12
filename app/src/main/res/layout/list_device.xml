@@ -47,7 +47,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tv_tb_id"
+                    android:id="@+id/tv_device_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="PPG-01"
@@ -57,7 +57,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_setoran_date"
+                android:id="@+id/tv_pasien_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Haryandra Fatwa"

@@ -61,6 +61,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_edittext"
             android:layout_below="@id/et_email_daftar"
+            android:orientation="horizontal"
             android:layout_marginTop="20dp">
 
             <ImageView

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_recent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recently IP Server"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/sf_pro_display_regular"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/tv_server"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="192.168.1.6:1883"
+        android:textColor="@color/colorInputText"
+        android:textSize="14sp"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/ic_server"
+        android:background="@drawable/bg_edittext"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:clickable="false"
+        android:layout_below="@id/tv_recent"/>
+
+    <TextView
+        android:id="@+id/tv_new"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New IP Server"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/sf_pro_display_regular"
+        android:textColor="@color/colorAccent"
+        android:textSize="18sp"
+        android:layout_below="@id/tv_server"/>
+
+    <EditText
+        android:id="@+id/et_new_server"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="IP Server"
+        android:inputType="text"
+        android:textColor="@color/colorInputText"
+        android:textSize="14sp"
+        android:drawablePadding="10dp"
+        android:drawableStart="@drawable/ic_server"
+        android:background="@drawable/bg_edittext"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="22dp"
+        android:layout_below="@id/tv_new"/>
+
+</RelativeLayout>

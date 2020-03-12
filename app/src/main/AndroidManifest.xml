@@ -34,10 +34,10 @@
             android:name=".Feature.Pasien.PasienActivity"></activity>
 
         <activity
-            android:name=".DokterActivity"></activity>
+            android:name=".Feature.Dokter.DokterActivity"></activity>
 
         <activity
-            android:name=".Feature.ProfileActivity"></activity>
+            android:name=".Feature.Pasien.ProfileActivity"></activity>
 
         <service android:name="org.eclipse.paho.android.service.MqttService" ></service>
 

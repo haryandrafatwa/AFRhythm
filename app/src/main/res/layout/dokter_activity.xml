@@ -25,12 +25,20 @@
             android:layout_height="wrap_content">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/civ_profile_image"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:id="@+id/civ_profile_image_dokter"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@drawable/ic_dummy_profile"
                 android:layout_alignParentEnd="true"
-                android:layout_marginRight="16dp" />
+                android:layout_marginRight="16dp"
+                android:visibility="gone"/>
+            <ProgressBar
+                android:id="@+id/progressbar_menu"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:indeterminate="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="16dp"/>
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -40,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
         android:layout_below="@+id/toolbar_beranda">
 
@@ -53,36 +61,45 @@
                 android:id="@+id/device"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Daftar Device"
+                android:text="Daftar Perangkat"
                 android:textSize="20sp"
                 android:textColor="@color/colorAccent"
                 android:fontFamily="@font/sf_pro_display_bold" />
 
             <TextView
-                android:id="@+id/expand"
+                android:id="@+id/add_device_dokter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tambah Device"
+                android:text="Tambah Perangkat"
                 android:textSize="14sp"
                 android:textColor="@color/colorAccent"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:fontFamily="@font/sf_pro_display_regular"
                 android:clickable="true" />
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/expand_cardview"
+            android:layout_below="@+id/device_layout"
+            android:layout_marginTop="24dp">
+        </RelativeLayout>
+
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="8dp"
             android:id="@+id/rvListDevice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/list_device"
+            tools:listitem="@layout/rumah_sakit"
             android:layout_below="@+id/device_layout"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
-            android:id="@+id/device_kosong"
+            android:id="@+id/device_kosong_dokter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Kamu belum menambahkan device"
@@ -91,6 +108,7 @@
             android:layout_marginBottom="20dp"
             android:layout_centerInParent="true"
             android:textColor="@color/colorMenuDefault"
+            android:fontFamily="@font/sf_pro_display_regular"
             android:textSize="16dp"
             android:visibility="invisible" />
     </RelativeLayout>

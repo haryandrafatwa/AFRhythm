@@ -59,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
-        dummyDispPict = FirebaseStorage.getInstance().getReference("DisplayPictures/dummy").child("default.svg");
+        dummyDispPict = FirebaseStorage.getInstance().getReference("DisplayPictures/dummy").child("ic_profile.png");
         initialize();
 
     }
@@ -277,7 +277,12 @@ public class RegisterActivity extends AppCompatActivity {
                                 userMap.put("email", email);
                                 userMap.put("tipe", tipe);
                                 userMap.put("bod", "-");
-                                userMap.put("subscription", "-");
+                                if(tipe.equalsIgnoreCase("pasien")){
+                                    userMap.put("subscription", "-");
+                                }else{
+                                    userMap.put("pasienCount", 0);
+                                }
+                                userMap.put("ip", "-");
                                 dummyDispPict.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
